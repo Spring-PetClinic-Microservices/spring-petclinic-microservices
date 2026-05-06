@@ -1,0 +1,6 @@
+apiVersion: v2
+name: config-server
+description: Spring Cloud Config Server sub-chart
+type: application
+version: 0.1.0
+appVersion: "4.0.1"

@@ -5,6 +5,10 @@ target/
 # Jenv
 .java-version
 
+
+.kiro/
+
+
 # Eclipse
 .settings/
 .classpath
@@ -21,3 +25,6 @@ target/
 generated/
 
 **/.DS_Store
+
+# Helm — generated dependency archives (regenerate with: helm dependency update ./helm)
+helm/charts/*.tgz

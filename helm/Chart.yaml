@@ -1,0 +1,41 @@
+apiVersion: v2
+name: petclinic
+description: Spring PetClinic Microservices - Umbrella Helm Chart for AKS deployment
+type: application
+version: 0.1.0
+appVersion: "4.0.1"
+
+dependencies:
+  - name: config-server
+    version: "0.1.0"
+    repository: "file://charts/config-server"
+  - name: discovery-server
+    version: "0.1.0"
+    repository: "file://charts/discovery-server"
+  - name: api-gateway
+    version: "0.1.0"
+    repository: "file://charts/api-gateway"
+  - name: customers-service
+    version: "0.1.0"
+    repository: "file://charts/customers-service"
+  - name: visits-service
+    version: "0.1.0"
+    repository: "file://charts/visits-service"
+  - name: vets-service
+    version: "0.1.0"
+    repository: "file://charts/vets-service"
+  - name: genai-service
+    version: "0.1.0"
+    repository: "file://charts/genai-service"
+  - name: admin-server
+    version: "0.1.0"
+    repository: "file://charts/admin-server"
+  - name: zipkin
+    version: "0.1.0"
+    repository: "file://charts/zipkin"
+  - name: prometheus
+    version: "0.1.0"
+    repository: "file://charts/prometheus"
+  - name: grafana
+    version: "0.1.0"
+    repository: "file://charts/grafana"

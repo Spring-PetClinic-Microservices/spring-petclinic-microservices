@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image:
+  repository: "spring-petclinic-discovery-server"
+  tag: ""
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8761
+
+resources:
+  limits:
+    memory: 512Mi
+    cpu: 500m
+  requests:
+    memory: 256Mi
+    cpu: 100m

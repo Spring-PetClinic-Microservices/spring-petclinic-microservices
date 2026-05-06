@@ -1,0 +1,23 @@
+replicaCount: 1
+
+image:
+  repository: "spring-petclinic-api-gateway"
+  tag: ""
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  host: ""
+  tls: []
+
+resources:
+  limits:
+    memory: 512Mi
+    cpu: 500m
+  requests:
+    memory: 256Mi
+    cpu: 100m

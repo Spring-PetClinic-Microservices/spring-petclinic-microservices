@@ -1,0 +1,211 @@
+# Global values inherited by all sub-charts via .Values.global
+global:
+  # ACR hostname, e.g. myacr.azurecr.io — set via --set at install time
+  imageRegistry: ""
+  imageTag: "latest"
+  namespace: petclinic
+  springProfile: docker
+  configServerUrl: "http://config-server:8888"
+  eurekaDefaultZone: "http://discovery-server:8761/eureka/"
+
+# ── Bootstrap tier ────────────────────────────────────────────────────────────
+
+config-server:
+  replicaCount: 1
+  image:
+    repository: "spring-petclinic-config-server"
+    tag: ""           # falls back to global.imageTag
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8888
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      memory: 256Mi
+      cpu: 100m
+
+discovery-server:
+  replicaCount: 1
+  image:
+    repository: "spring-petclinic-discovery-server"
+    tag: ""
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8761
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      memory: 256Mi
+      cpu: 100m
+
+# ── Application tier ──────────────────────────────────────────────────────────
+
+api-gateway:
+  replicaCount: 1
+  image:
+    repository: "spring-petclinic-api-gateway"
+    tag: ""
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8080
+  ingress:
+    enabled: true
+    host: ""          # set to your domain, e.g. petclinic.example.com; empty = IP-based
+    tls: []           # e.g. [{secretName: petclinic-tls, hosts: [petclinic.example.com]}]
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      memory: 256Mi
+      cpu: 100m
+
+customers-service:
+  replicaCount: 1
+  image:
+    repository: "spring-petclinic-customers-service"
+    tag: ""
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8081
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      memory: 256Mi
+      cpu: 100m
+
+visits-service:
+  replicaCount: 1
+  image:
+    repository: "spring-petclinic-visits-service"
+    tag: ""
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8082
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      memory: 256Mi
+      cpu: 100m
+
+vets-service:
+  replicaCount: 1
+  image:
+    repository: "spring-petclinic-vets-service"
+    tag: ""
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8083
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      memory: 256Mi
+      cpu: 100m
+
+genai-service:
+  replicaCount: 1
+  image:
+    repository: "spring-petclinic-genai-service"
+    tag: ""
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8084
+  # API keys — supply at install time via --set, never commit real values here
+  genaiSecret:
+    openaiApiKey: ""
+    azureOpenaiKey: ""
+    azureOpenaiEndpoint: ""
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      memory: 256Mi
+      cpu: 100m
+
+admin-server:
+  replicaCount: 1
+  image:
+    repository: "spring-petclinic-admin-server"
+    tag: ""
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9090
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      memory: 256Mi
+      cpu: 100m
+
+# ── Observability tier ────────────────────────────────────────────────────────
+
+zipkin:
+  replicaCount: 1
+  image:
+    repository: "openzipkin/zipkin"
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9411
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+    requests:
+      memory: 256Mi
+      cpu: 100m
+
+prometheus:
+  replicaCount: 1
+  image:
+    repository: "spring-petclinic-prometheus"
+    tag: ""
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9090
+  resources:
+    limits:
+      memory: 256Mi
+      cpu: 300m
+    requests:
+      memory: 128Mi
+      cpu: 100m
+
+grafana:
+  replicaCount: 1
+  image:
+    repository: "spring-petclinic-grafana"
+    tag: ""
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3000
+  resources:
+    limits:
+      memory: 256Mi
+      cpu: 300m
+    requests:
+      memory: 128Mi
+      cpu: 100m

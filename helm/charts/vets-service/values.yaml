@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image:
+  repository: "spring-petclinic-vets-service"
+  tag: ""
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8083
+
+resources:
+  limits:
+    memory: 512Mi
+    cpu: 500m
+  requests:
+    memory: 256Mi
+    cpu: 100m

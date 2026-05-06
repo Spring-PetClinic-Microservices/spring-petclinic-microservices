@@ -1,0 +1,24 @@
+replicaCount: 1
+
+image:
+  repository: "spring-petclinic-genai-service"
+  tag: ""
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8084
+
+# API keys — supply at install time via --set, never commit real values
+genaiSecret:
+  openaiApiKey: ""
+  azureOpenaiKey: ""
+  azureOpenaiEndpoint: ""
+
+resources:
+  limits:
+    memory: 512Mi
+    cpu: 500m
+  requests:
+    memory: 256Mi
+    cpu: 100m

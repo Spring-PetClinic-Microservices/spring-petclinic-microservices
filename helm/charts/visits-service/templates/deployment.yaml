@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "visits-service.fullname" . }}
+  namespace: {{ .Values.global.namespace | default "petclinic" }}
+  labels:
+    {{- include "visits-service.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "visits-service.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "visits-service.selectorLabels" . | nindent 8 }}
+    spec:
+      initContainers:
+        {{- include "petclinic.initContainers.waitForConfig" . | nindent 8 }}
+        {{- include "petclinic.initContainers.waitForDiscovery" . | nindent 8 }}
+      containers:
+        - name: visits-service
+          image: {{ include "visits-service.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8082
+              protocol: TCP
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.global.springProfile | default "docker" | quote }}
+            - name: CONFIG_SERVER_URL
+              value: {{ .Values.global.configServerUrl | default "http://config-server:8888" | quote }}
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: {{ .Values.global.eurekaDefaultZone | default "http://discovery-server:8761/eureka/" | quote }}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8082
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8082
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            failureThreshold: 5
+            timeoutSeconds: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

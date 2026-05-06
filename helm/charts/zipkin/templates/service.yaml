@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zipkin
+  namespace: {{ .Values.global.namespace | default "petclinic" }}
+  labels:
+    {{- include "zipkin.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 9411
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "zipkin.selectorLabels" . | nindent 4 }}
